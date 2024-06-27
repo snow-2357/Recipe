@@ -84,12 +84,13 @@ const RecipeList = () => {
     setIsPopupOpen(false);
     setSelectedRecipe(null);
   };
+  const tabs = ["Home", "Favorite"];
 
   return (
     <div className="bg-white">
       <header>
         <div className="container mx-auto px-6 py-3">
-          <NavBar />
+          <NavBar tabs={tabs} />
           <div className="relative mt-6 max-w-lg mx-auto">
             <SearchIcon />
             <input
