@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import useGetData from "../Hooks/useGetData";
 
 export default function RecipePopup({ recipeId, onClose }) {
@@ -17,7 +17,7 @@ export default function RecipePopup({ recipeId, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg relative max-w-md mx-auto border border-gray-300">
+      <div className="bg-white p-6 rounded-lg relative max-w-2xl mx-auto border border-gray-300 flex">
         <button
           className="absolute top-2 right-2 text-gray-700 hover:text-gray-900"
           onClick={onClose}
@@ -38,15 +38,30 @@ export default function RecipePopup({ recipeId, onClose }) {
           </div>
         ) : recipeDetails ? (
           <>
-            <img
-              src={recipeDetails.image}
-              alt={recipeDetails.title}
-              className="w-full h-64 object-cover rounded-lg"
-            />
-            <h3 className="text-xl font-semibold mt-4">
-              {recipeDetails.title}
-            </h3>
-            <p className="mt-2 text-gray-600">{recipeDetails.instructions}</p>
+            <div className="w-2/3 pr-4">
+              <img
+                src={recipeDetails.image}
+                alt={recipeDetails.title}
+                className="w-full h-64 object-cover rounded-lg"
+              />
+              <h3 className="text-xl font-semibold mt-4">
+                {recipeDetails.title}
+              </h3>
+              <p className="mt-2 text-gray-600">
+                {recipeDetails.instructions.replace(/<[^>]+>/g, "")}
+              </p>
+            </div>
+            <div className="w-1/3 pl-4 border-l border-gray-300">
+              <h4 className="text-lg font-semibold mb-2">Ingredients</h4>
+              <ul className="list-disc list-inside text-left">
+                {recipeDetails.extendedIngredients.map((ingredient) => (
+                  <li key={ingredient.id}>
+                    {ingredient.amount} {ingredient.unit}{" "}
+                    <span className="font-semibold">{ingredient.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </>
         ) : null}
       </div>
