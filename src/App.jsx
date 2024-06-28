@@ -1,17 +1,18 @@
 import "./App.css";
 import RecipeList from "./components/RecipeList";
-import { FavoriteContext } from "./Utils/FavoriteContext";
+import { FavoriteProvider } from "./Utils/FavoriteContext"; // Correct import
 import { RecipeProvider } from "./Utils/RecipeContext";
 import { TabProvider } from "./Utils/TabContext";
+
 function App() {
   return (
     <>
       <TabProvider>
-        <RecipeProvider>
-          <FavoriteContext>
+        <FavoriteProvider>
+          <RecipeProvider>
             <RecipeList />
-          </FavoriteContext>
-        </RecipeProvider>
+          </RecipeProvider>
+        </FavoriteProvider>
       </TabProvider>
     </>
   );

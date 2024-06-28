@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState } from "react";
 
 export const FavoriteContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 export const FavoriteProvider = ({ children }) => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 

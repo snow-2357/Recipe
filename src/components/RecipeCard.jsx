@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState } from "react";
-import { FavoriteContext } from "../contexts/FavoriteContext";
+import { FavoriteContext } from "../Utils/FavoriteContext";
+//
 
 export default function RecipeCard({ data, onClick }) {
   const { favoriteRecipes, addFavorite, removeFavorite } =
