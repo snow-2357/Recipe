@@ -5,7 +5,7 @@ export const RecipeContext = createContext();
 
 export const RecipeProvider = ({ children }) => {
   const [recipes, setRecipes] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const apiKey = import.meta.env.VITE_SPOOACULAR_KEY;
 
   // useEffect(() => {

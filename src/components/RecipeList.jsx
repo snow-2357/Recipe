@@ -1,61 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NavBar from "./NavBar";
 import RecipeCard from "./RecipeCard";
 import RecipePopup from "./RecipeDetails";
-
-const recipes = [
-  {
-    id: 1,
-    title: "Spaghetti Carbonara",
-    details: "Details about Spaghetti Carbonara",
-  },
-  {
-    id: 2,
-    title: "Chicken Parmesan",
-    details: "Details about Chicken Parmesan",
-  },
-  {
-    id: 3,
-    title: "Beef Stroganoff",
-    details: "Details about Beef Stroganoff",
-  },
-  {
-    id: 4,
-    title: "Vegetable Stir Fry",
-    details: "Details about Vegetable Stir Fry",
-  },
-  {
-    id: 5,
-    title: "Grilled Cheese Sandwich",
-    details: "Details about Grilled Cheese Sandwich",
-  },
-  {
-    id: 6,
-    title: "Caesar Salad",
-    details: "Details about Caesar Salad",
-  },
-  {
-    id: 7,
-    title: "Tacos",
-    details: "Details about Tacos",
-  },
-  {
-    id: 8,
-    title: "Pancakes",
-    image: "path/to/image8.jpg",
-    details: "Details about Pancakes",
-  },
-  {
-    id: 9,
-    title: "Tomato Soup",
-    details: "Details about Tomato Soup",
-  },
-  {
-    id: 10,
-    title: "BBQ Ribs",
-    details: "Details about BBQ Ribs",
-  },
-];
+import { RecipeContext } from "../Utils/RecipeContext";
 
 const SearchIcon = () => (
   <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -74,6 +21,7 @@ const SearchIcon = () => (
 const RecipeList = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { recipes, page, setPage } = useContext(RecipeContext);
 
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
@@ -84,6 +32,10 @@ const RecipeList = () => {
     setIsPopupOpen(false);
     setSelectedRecipe(null);
   };
+
+  //then have 5000+ recipes so i picked this number
+  const totalPages = 400;
+
   const tabs = ["Home", "Favorite"];
 
   return (
@@ -104,21 +56,37 @@ const RecipeList = () => {
       <main className="my-8">
         <div className="container mx-auto px-6">
           <h3 className="text-gray-700 text-2xl font-medium">Recipes</h3>
-          <span className="mt-3 text-sm text-gray-500">20+ Recipes</span>
+          <span className="mt-3 text-sm text-gray-500">5000+ Recipes</span>
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
             {recipes &&
               recipes.map((item) => (
                 <RecipeCard
                   key={item.id}
                   data={item}
-                  onClick={handleRecipeClick}
+                  onClick={() => handleRecipeClick(item)}
                 />
               ))}
           </div>
+          {isPopupOpen && selectedRecipe && (
+            <RecipePopup recipe={selectedRecipe} onClose={closePopup} />
+          )}
+          {/* pagination */}
+          <div className="flex justify-center mt-8 items-center">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              className="mx-1 px-3 py-2 bg-blue-500 text-white rounded-md focus:outline-none focus:shadow-outline"
+            >
+              Prev
+            </button>
+            <span className="mx-2 text-gray-700">{`${page} / ${totalPages}`}</span>
+            <button
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+              className="mx-1 px-3 py-2 bg-blue-500 text-white rounded-md focus:outline-none focus:shadow-outline"
+            >
+              Next
+            </button>
+          </div>
         </div>
-        {isPopupOpen && selectedRecipe && (
-          <RecipePopup recipe={selectedRecipe} onClose={closePopup} />
-        )}
       </main>
     </div>
   );
