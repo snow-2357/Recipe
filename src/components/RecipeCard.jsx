@@ -31,8 +31,7 @@ export default function RecipeCard({ data, onClick }) {
       <div
         className="flex items-end justify-end h-56 w-full bg-cover"
         style={{
-          backgroundImage:
-            "url(https://cdn.britannica.com/53/157453-050-2D17B555/Ice-cubes-heat-temperature-rises-melting-ice.jpg)",
+          backgroundImage: `url(${data.image})`,
         }}
       >
         <button
@@ -46,7 +45,9 @@ export default function RecipeCard({ data, onClick }) {
         </button>
       </div>
       <div className="px-5 py-3">
-        <h3 className="text-gray-700 capitalize font-semibold">{data.title}</h3>
+        <h3 className="text-gray-700 capitalize font-semibold line-clamp-1">
+          {data.title}
+        </h3>
         <div name="count" className="flex items-center mt-2">
           <button
             onClick={decreaseServings}
