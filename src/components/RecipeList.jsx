@@ -24,8 +24,8 @@ const RecipeList = () => {
   const { recipes, error, loadingState, page, setPage } =
     useContext(RecipeContext);
 
-  const handleRecipeClick = (recipe) => {
-    setSelectedRecipe(recipe);
+  const handleRecipeClick = (recipeId) => {
+    setSelectedRecipe(recipeId);
     setIsPopupOpen(true);
   };
 
@@ -68,12 +68,12 @@ const RecipeList = () => {
                   <RecipeCard
                     key={item.id}
                     data={item}
-                    onClick={() => handleRecipeClick(item)}
+                    onClick={() => handleRecipeClick(item.id)}
                   />
                 ))}
               </div>
               {isPopupOpen && selectedRecipe && (
-                <RecipePopup recipe={selectedRecipe} onClose={closePopup} />
+                <RecipePopup recipeId={selectedRecipe} onClose={closePopup} />
               )}
             </>
           )}

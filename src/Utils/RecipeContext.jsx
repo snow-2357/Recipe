@@ -1,5 +1,5 @@
-import axios from "axios";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
+import useGetData from "../Hooks/useGetData";
 
 export const RecipeContext = createContext();
 
@@ -7,41 +7,28 @@ export const RecipeProvider = ({ children }) => {
   const [recipes, setRecipes] = useState([]);
   const [page, setPage] = useState(1);
   const apiKey = import.meta.env.VITE_SPOOACULAR_KEY;
-  const [loadingState, setLoading] = useState(false);
-  const [error, setError] = useState(false); // we going to set this for all errors
+
+  const url = `https://api.spoonacular.com/recipes/complexSearch`;
+
+  const params = useMemo(
+    () => ({
+      number: 8,
+      offset: (page - 1) * 9,
+      apiKey: apiKey,
+    }),
+    [page, apiKey]
+  );
+
+  const { data, loading, error } = useGetData(url, params);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://api.spoonacular.com/recipes/complexSearch`,
-          {
-            params: {
-              // apiKey: apiKey,
-              number: 8,
-              offset: (page - 1) * 9,
-            },
-          }
-        );
-        setRecipes(response.data.results);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecipes();
-  }, [page]);
-
-  console.log(recipes, "data");
+    if (data) {
+      setRecipes(data.results || []);
+    }
+  }, [data]);
 
   return (
-    <RecipeContext.Provider
-      value={{ recipes, error, loadingState, page, setPage }}
-    >
+    <RecipeContext.Provider value={{ recipes, error, loading, page, setPage }}>
       {children}
     </RecipeContext.Provider>
   );
