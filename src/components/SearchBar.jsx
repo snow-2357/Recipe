@@ -17,15 +17,32 @@ const SearchIcon = () => (
 
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { handleSearch } = useContext(RecipeContext);
+  const { handleSearch, handleSearchCuisine } = useContext(RecipeContext);
+  const [searchOption, setSearchOption] = useState(0); // 0 means default
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //
+    console.log(searchQuery, searchOption);
     if (searchQuery.trim()) {
-      handleSearch(searchQuery);
+      if (searchOption === 0) {
+        handleSearch(searchQuery);
+      } else if (searchOption === 2) {
+        handleSearchCuisine(searchQuery);
+      }
     }
   };
-  //todo: add a advance search option too
+
+  const handleCheck = (e) => {
+    const { name } = e.target;
+
+    if (name === "ingredient") {
+      setSearchOption(searchOption === 1 ? 0 : 1);
+    } else if (name === "cuisine") {
+      setSearchOption(searchOption === 2 ? 0 : 2);
+    }
+  };
+
   return (
     <>
       <form
@@ -37,11 +54,12 @@ export default function SearchBar() {
           <input
             className="w-full bg-white border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline"
             type="text"
-            placeholder="Search"
+            placeholder="Search by keyword"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+
         <button
           type="submit"
           className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:shadow-outline"
@@ -49,6 +67,28 @@ export default function SearchBar() {
           Search
         </button>
       </form>
+      <div className="my-4">
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            className="form-checkbox text-blue-500"
+            name="ingredient"
+            checked={searchOption === 1}
+            onChange={handleCheck}
+          />
+          <span className="ml-2">Ingredient</span>
+        </label>
+        <label className="inline-flex items-center ml-4">
+          <input
+            type="checkbox"
+            className="form-checkbox text-blue-500"
+            name="cuisine"
+            checked={searchOption === 2}
+            onChange={handleCheck}
+          />
+          <span className="ml-2">Cuisine</span>
+        </label>
+      </div>
     </>
   );
 }

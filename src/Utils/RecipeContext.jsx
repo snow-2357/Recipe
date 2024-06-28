@@ -9,6 +9,7 @@ export const RecipeProvider = ({ children }) => {
   const [recipesTotal, setRecipeTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [cuisineSearch, setCuisineSearch] = useState("");
   const apiKey = import.meta.env.VITE_SPOOACULAR_KEY;
 
   const [url, setUrl] = useState(
@@ -21,8 +22,9 @@ export const RecipeProvider = ({ children }) => {
       offset: (page - 1) * 9,
       apiKey: apiKey,
       query: searchQuery,
+      cuisine: cuisineSearch,
     }),
-    [page, apiKey, searchQuery]
+    [page, apiKey, searchQuery, cuisineSearch]
   );
 
   const { data, loading, error } = useGetData(url, params);
@@ -35,7 +37,14 @@ export const RecipeProvider = ({ children }) => {
   }, [data]);
 
   const handleSearch = (query) => {
-    setSearchQuery(query);
+    setCuisineSearch("");
+    query;
+    setPage(1);
+  };
+  const handleSearchCuisine = (query) => {
+    setSearchQuery("");
+    setCuisineSearch(query);
+
     setPage(1);
   };
 
@@ -50,6 +59,7 @@ export const RecipeProvider = ({ children }) => {
         setPage,
         setUrl,
         handleSearch,
+        handleSearchCuisine,
       }}
     >
       {children}
