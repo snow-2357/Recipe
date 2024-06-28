@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { RecipeContext } from "../Utils/RecipeContext";
 
 const SearchIcon = () => (
   <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -16,12 +17,12 @@ const SearchIcon = () => (
 
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { handleSearch } = useContext(RecipeContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // doing a onclick seach
     if (searchQuery.trim()) {
-      console.log(searchQuery);
-      // setUrl
+      handleSearch(searchQuery);
     }
   };
   return (

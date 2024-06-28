@@ -15,7 +15,8 @@ const RecipeList = () => {
   const { currentTab } = useContext(TabContext);
   const { favoriteRecipes, displayedFavorites } = useContext(FavoriteContext);
 
-  const { recipes, error, loadingState } = useContext(RecipeContext);
+  const { recipes, recipesTotal, error, loadingState } =
+    useContext(RecipeContext);
 
   const handleRecipeClick = (recipeId) => {
     setSelectedRecipe(recipeId);
@@ -47,7 +48,7 @@ const RecipeList = () => {
           </h3>
           <span className="mt-3 text-sm text-gray-500">
             {currentTab === "Home"
-              ? "5000+ Recipes"
+              ? `${recipesTotal} Recipes`
               : `${favoriteRecipes.length} Recipes`}
           </span>
           <>
@@ -74,7 +75,6 @@ const RecipeList = () => {
               </>
             )}
           </>
-
           {/* Pagination */}
           <Pagination />
         </div>

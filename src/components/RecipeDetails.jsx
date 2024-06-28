@@ -38,7 +38,7 @@ export default function RecipePopup({ recipeId, onClose }) {
           </div>
         ) : recipeDetails ? (
           <>
-            <div className="w-2/3 pr-4">
+            <div className="w-2/3 pr-4 h-2/3">
               <img
                 src={recipeDetails.image}
                 alt={recipeDetails.title}
@@ -48,7 +48,7 @@ export default function RecipePopup({ recipeId, onClose }) {
                 {recipeDetails.title}
               </h3>
               <p className="mt-2 text-gray-600">
-                {recipeDetails.instructions.replace(/<[^>]+>/g, "")}
+                {recipeDetails.summary.replace(/<[^>]+>/g, "")}
               </p>
             </div>
             <div className="w-1/3 pl-4 border-l border-gray-300">
