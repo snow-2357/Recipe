@@ -21,7 +21,8 @@ const SearchIcon = () => (
 const RecipeList = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { recipes, page, setPage } = useContext(RecipeContext);
+  const { recipes, error, loadingState, page, setPage } =
+    useContext(RecipeContext);
 
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
@@ -33,7 +34,6 @@ const RecipeList = () => {
     setSelectedRecipe(null);
   };
 
-  //then have 5000+ recipes so i picked this number
   const totalPages = 400;
 
   const tabs = ["Home", "Favorite"];
@@ -57,20 +57,27 @@ const RecipeList = () => {
         <div className="container mx-auto px-6">
           <h3 className="text-gray-700 text-2xl font-medium">Recipes</h3>
           <span className="mt-3 text-sm text-gray-500">5000+ Recipes</span>
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-            {recipes &&
-              recipes.map((item) => (
-                <RecipeCard
-                  key={item.id}
-                  data={item}
-                  onClick={() => handleRecipeClick(item)}
-                />
-              ))}
-          </div>
-          {isPopupOpen && selectedRecipe && (
-            <RecipePopup recipe={selectedRecipe} onClose={closePopup} />
+          {loadingState ? (
+            <div className="text-center">Loading...</div>
+          ) : error ? (
+            <div className="text-center text-red-500">Something went wrong</div>
+          ) : (
+            <>
+              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+                {recipes.map((item) => (
+                  <RecipeCard
+                    key={item.id}
+                    data={item}
+                    onClick={() => handleRecipeClick(item)}
+                  />
+                ))}
+              </div>
+              {isPopupOpen && selectedRecipe && (
+                <RecipePopup recipe={selectedRecipe} onClose={closePopup} />
+              )}
+            </>
           )}
-          {/* pagination */}
+          {/* Pagination */}
           <div className="flex justify-center mt-8 items-center">
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
