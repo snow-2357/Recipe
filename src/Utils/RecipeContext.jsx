@@ -8,7 +8,9 @@ export const RecipeProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const apiKey = import.meta.env.VITE_SPOOACULAR_KEY;
 
-  const url = `https://api.spoonacular.com/recipes/complexSearch`;
+  const [url, setUrl] = useState(
+    `https://api.spoonacular.com/recipes111/complexSearch`
+  );
 
   const params = useMemo(
     () => ({
@@ -28,7 +30,9 @@ export const RecipeProvider = ({ children }) => {
   }, [data]);
 
   return (
-    <RecipeContext.Provider value={{ recipes, error, loading, page, setPage }}>
+    <RecipeContext.Provider
+      value={{ recipes, error, loading, page, setPage, setUrl }}
+    >
       {children}
     </RecipeContext.Provider>
   );

@@ -21,7 +21,9 @@ const SearchIcon = () => (
 const RecipeList = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { recipes, error, loadingState, page, setPage } =
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const { recipes, error, loadingState, page, setPage, setUrl } =
     useContext(RecipeContext);
 
   const handleRecipeClick = (recipeId) => {
@@ -34,6 +36,15 @@ const RecipeList = () => {
     setSelectedRecipe(null);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // doing a onclick seach
+    if (searchQuery.trim()) {
+      console.log(searchQuery);
+      // setUrl
+    }
+  };
+
   const totalPages = 400;
 
   const tabs = ["Home", "Favorite"];
@@ -43,14 +54,27 @@ const RecipeList = () => {
       <header>
         <div className="container mx-auto px-6 py-3">
           <NavBar tabs={tabs} />
-          <div className="relative mt-6 max-w-lg mx-auto">
-            <SearchIcon />
-            <input
-              className="w-full border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline"
-              type="text"
-              placeholder="Search"
-            />
-          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center mt-6 max-w-lg mx-auto relative"
+          >
+            <div className="flex-grow relative">
+              <SearchIcon className="absolute left-3 top-3 text-gray-400" />
+              <input
+                className="w-full bg-white border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <button
+              type="submit"
+              className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+            >
+              Search
+            </button>
+          </form>
         </div>
       </header>
       <main className="my-8">
