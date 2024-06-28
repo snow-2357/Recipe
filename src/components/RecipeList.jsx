@@ -31,6 +31,7 @@ const RecipeList = () => {
   const tabs = ["Home", "Favorite"];
 
   const displayedRecipes = currentTab === "Home" ? recipes : displayedFavorites;
+  console.log(displayedRecipes, "apple");
 
   return (
     <div className="bg-white">

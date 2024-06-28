@@ -23,7 +23,7 @@ const useGetData = (url, params) => {
     };
 
     fetchData();
-  }, [url, params]);
+  }, [url, params, apiKey]);
 
   return { data, loading, error };
 };

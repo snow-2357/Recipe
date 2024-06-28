@@ -14,10 +14,10 @@ const SearchIcon = () => (
     </svg>
   </span>
 );
-
+//
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { handleSearch, handleSearchCuisine } = useContext(RecipeContext);
+  const { handleSearch, setUrl } = useContext(RecipeContext);
   const [searchOption, setSearchOption] = useState(0); // 0 means default
 
   const handleSubmit = (e) => {
@@ -26,9 +26,14 @@ export default function SearchBar() {
     console.log(searchQuery, searchOption);
     if (searchQuery.trim()) {
       if (searchOption === 0) {
-        handleSearch(searchQuery);
+        setUrl("https://api.spoonacular.com/recipes/complexSearch");
+        handleSearch(searchQuery, 0);
+      } else if (searchOption === 1) {
+        setUrl("https://api.spoonacular.com/recipes/findByIngredients");
+        handleSearch(searchQuery, 1);
       } else if (searchOption === 2) {
-        handleSearchCuisine(searchQuery);
+        setUrl("https://api.spoonacular.com/recipes/complexSearch");
+        handleSearch(searchQuery, 2);
       }
     }
   };
@@ -67,7 +72,17 @@ export default function SearchBar() {
           Search
         </button>
       </form>
-      <div className="my-4">
+      <div className="my-4 flex gap-4 justify-center items-center">
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            className="form-checkbox text-blue-500"
+            name="cuisine"
+            checked={searchOption === 2}
+            onChange={handleCheck}
+          />
+          <span className="ml-2">Cuisine</span>
+        </label>
         <label className="inline-flex items-center">
           <input
             type="checkbox"
@@ -77,16 +92,6 @@ export default function SearchBar() {
             onChange={handleCheck}
           />
           <span className="ml-2">Ingredient</span>
-        </label>
-        <label className="inline-flex items-center ml-4">
-          <input
-            type="checkbox"
-            className="form-checkbox text-blue-500"
-            name="cuisine"
-            checked={searchOption === 2}
-            onChange={handleCheck}
-          />
-          <span className="ml-2">Cuisine</span>
         </label>
       </div>
     </>
