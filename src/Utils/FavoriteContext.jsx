@@ -5,6 +5,8 @@ export const FavoriteContext = createContext();
 
 export const FavoriteProvider = ({ children }) => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [favPage, setFavPage] = useState(1);
+  const favPageSize = 8;
 
   const addFavorite = (recipe) => {
     setFavoriteRecipes((prevFavorites) => {
@@ -21,9 +23,24 @@ export const FavoriteProvider = ({ children }) => {
     );
   };
 
+  const favTotalPages = Math.ceil(favoriteRecipes.length / favPageSize);
+
+  const displayedFavorites = favoriteRecipes.slice(
+    (favPage - 1) * favPageSize,
+    favPage * favPageSize
+  );
+
   return (
     <FavoriteContext.Provider
-      value={{ favoriteRecipes, addFavorite, removeFavorite }}
+      value={{
+        favoriteRecipes,
+        addFavorite,
+        removeFavorite,
+        favPage,
+        setFavPage,
+        favTotalPages,
+        displayedFavorites,
+      }}
     >
       {children}
     </FavoriteContext.Provider>

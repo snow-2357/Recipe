@@ -5,6 +5,7 @@ import RecipePopup from "./RecipeDetails";
 import { RecipeContext } from "../Utils/RecipeContext";
 import { TabContext } from "../Utils/TabContext";
 import { FavoriteContext } from "../Utils/FavoriteContext";
+import Pagination from "./Pagination";
 
 const SearchIcon = () => (
   <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -25,10 +26,9 @@ const RecipeList = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { currentTab } = useContext(TabContext);
-  const { favoriteRecipes } = useContext(FavoriteContext);
+  const { favoriteRecipes, displayedFavorites } = useContext(FavoriteContext);
 
-  const { recipes, error, loadingState, page, setPage, setUrl } =
-    useContext(RecipeContext);
+  const { recipes, error, loadingState, setUrl } = useContext(RecipeContext);
 
   const handleRecipeClick = (recipeId) => {
     setSelectedRecipe(recipeId);
@@ -49,11 +49,10 @@ const RecipeList = () => {
     }
   };
 
-  const totalPages = 400;
-
   const tabs = ["Home", "Favorite"];
 
-  //  have to break it down
+  const displayedRecipes = currentTab === "Home" ? recipes : displayedFavorites;
+
   return (
     <div className="bg-white">
       <header>
@@ -102,21 +101,13 @@ const RecipeList = () => {
             ) : (
               <>
                 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-                  {currentTab === "Home"
-                    ? recipes.map((item) => (
-                        <RecipeCard
-                          key={item.id}
-                          data={item}
-                          onClick={() => handleRecipeClick(item.id)}
-                        />
-                      ))
-                    : favoriteRecipes.map((item) => (
-                        <RecipeCard
-                          key={item.id}
-                          data={item}
-                          onClick={() => handleRecipeClick(item.id)}
-                        />
-                      ))}
+                  {displayedRecipes.map((item) => (
+                    <RecipeCard
+                      key={item.id}
+                      data={item}
+                      onClick={() => handleRecipeClick(item.id)}
+                    />
+                  ))}
                 </div>
                 {isPopupOpen && selectedRecipe && (
                   <RecipePopup recipeId={selectedRecipe} onClose={closePopup} />
@@ -126,21 +117,7 @@ const RecipeList = () => {
           </>
 
           {/* Pagination */}
-          <div className="flex justify-center mt-8 items-center">
-            <button
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              className="mx-1 px-3 py-2 bg-blue-500 text-white rounded-md focus:outline-none focus:shadow-outline"
-            >
-              Prev
-            </button>
-            <span className="mx-2 text-gray-700">{`${page} / ${totalPages}`}</span>
-            <button
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              className="mx-1 px-3 py-2 bg-blue-500 text-white rounded-md focus:outline-none focus:shadow-outline"
-            >
-              Next
-            </button>
-          </div>
+          <Pagination />
         </div>
       </main>
     </div>
