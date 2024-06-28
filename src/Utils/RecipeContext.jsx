@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState, useEffect, useMemo } from "react";
 import useGetData from "../Hooks/useGetData";
 

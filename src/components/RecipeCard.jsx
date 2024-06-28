@@ -1,10 +1,24 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useContext, useEffect, useState } from "react";
+import { FavoriteContext } from "../contexts/FavoriteContext";
 
 export default function RecipeCard({ data, onClick }) {
+  const { favoriteRecipes, addFavorite, removeFavorite } =
+    useContext(FavoriteContext);
   const [saved, setSaved] = useState(false);
   const [servings, setServings] = useState(1);
 
-  const handleSave = () => {
+  useEffect(() => {
+    setSaved(favoriteRecipes.some((fav) => fav.id === data.id));
+  }, [favoriteRecipes, data.id]);
+
+  const handleSave = (e) => {
+    e.stopPropagation();
+    if (saved) {
+      removeFavorite(data.id);
+    } else {
+      addFavorite(data);
+    }
     setSaved(!saved);
   };
 
