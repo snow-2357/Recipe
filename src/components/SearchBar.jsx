@@ -25,6 +25,7 @@ export default function SearchBar() {
       handleSearch(searchQuery);
     }
   };
+  //todo: add a advance search option too
   return (
     <>
       <form

@@ -39,8 +39,6 @@ export const RecipeProvider = ({ children }) => {
     setPage(1);
   };
 
-  // make clear action
-
   return (
     <RecipeContext.Provider
       value={{
