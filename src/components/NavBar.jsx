@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TabContext } from "../Hooks/TabContext";
+import { TabContext } from "../Utils/TabContext";
 
 const NavBar = ({ tabs }) => {
   const { currentTab, setCurrentTab } = useContext(TabContext);

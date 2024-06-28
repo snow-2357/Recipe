@@ -1,8 +1,7 @@
 import "./App.css";
 import RecipeList from "./components/RecipeList";
-import { RecipeProvider } from "./Hooks/ContextWrapper";
-import { TabProvider } from "./Hooks/TabContext";
-
+import { RecipeProvider } from "./Utils/RecipeContext";
+import { TabProvider } from "./Utils/TabContext";
 function App() {
   return (
     <>
