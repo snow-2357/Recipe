@@ -13,7 +13,7 @@ export const RecipeProvider = ({ children }) => {
   const apiKey = import.meta.env.VITE_SPOOACULAR_KEY;
 
   const [url, setUrl] = useState(
-    `https://api.spoonacular.com/recipes11/complexSearch`
+    `https://api.spoonacular.com/recipes/complexSearch`
   );
 
   const params = useMemo(() => {

@@ -7,7 +7,6 @@ export default function RecipeCard({ data, onClick }) {
   const { favoriteRecipes, addFavorite, removeFavorite } =
     useContext(FavoriteContext);
   const [saved, setSaved] = useState(false);
-  const [servings, setServings] = useState(1);
 
   useEffect(() => {
     setSaved(favoriteRecipes.some((fav) => fav.id === data.id));
@@ -21,18 +20,6 @@ export default function RecipeCard({ data, onClick }) {
       addFavorite(data);
     }
     setSaved(!saved);
-  };
-
-  const increaseServings = (e) => {
-    e.stopPropagation();
-    setServings(servings + 1);
-  };
-
-  const decreaseServings = (e) => {
-    e.stopPropagation();
-    if (servings > 1) {
-      setServings(servings - 1);
-    }
   };
 
   const handleClick = (e) => {
@@ -63,21 +50,6 @@ export default function RecipeCard({ data, onClick }) {
         <h3 className="text-gray-700 capitalize font-semibold line-clamp-1">
           {data.title}
         </h3>
-        <div name="count" className="flex items-center mt-2">
-          <button
-            onClick={decreaseServings}
-            className="bg-gray-300 text-gray-700 px-2 py-1 rounded-l"
-          >
-            -
-          </button>
-          <span className="px-3">{servings}</span>
-          <button
-            onClick={increaseServings}
-            className="bg-gray-300 text-gray-700 px-2 py-1 rounded-r"
-          >
-            +
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useGetData from "../Hooks/useGetData";
 
 export default function RecipePopup({ recipeId, onClose }) {
@@ -7,6 +7,8 @@ export default function RecipePopup({ recipeId, onClose }) {
     () => `https://api.spoonacular.com/recipes/${recipeId}/information`,
     [recipeId]
   );
+
+  const [servings, setServings] = useState(1);
 
   const { data: recipeDetails, loading, error } = useGetData(url);
 
@@ -16,7 +18,17 @@ export default function RecipePopup({ recipeId, onClose }) {
     }
   }, [error]);
 
-  // Note: this api dont have nutritional  values
+  const increaseServings = (e) => {
+    e.stopPropagation();
+    setServings(servings + 1);
+  };
+
+  const decreaseServings = (e) => {
+    e.stopPropagation();
+    if (servings > 1) {
+      setServings(servings - 1);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
@@ -58,13 +70,30 @@ export default function RecipePopup({ recipeId, onClose }) {
               <div className="w-1/2 pl-4 border-l border-gray-300">
                 <h4 className="text-lg font-semibold mb-2">Ingredients</h4>
                 <ul className="list-disc list-inside text-left">
-                  {recipeDetails.extendedIngredients.map((ingredient) => (
-                    <li key={ingredient.id}>
-                      {ingredient.amount} {ingredient.unit}{" "}
-                      <span className="font-semibold">{ingredient.name}</span>
-                    </li>
-                  ))}
+                  {recipeDetails.extendedIngredients
+                    .sort((a, b) => a.amount - b.amount)
+                    .map((ingredient) => (
+                      <li key={ingredient.id}>
+                        {ingredient.amount * servings} {ingredient.unit}{" "}
+                        <span className="font-semibold">{ingredient.name}</span>
+                      </li>
+                    ))}
                 </ul>
+                <div name="count" className="flex items-center mt-2">
+                  <button
+                    onClick={decreaseServings}
+                    className="bg-gray-300 text-gray-700 px-2 py-1 rounded-l"
+                  >
+                    -
+                  </button>
+                  <span className="px-3">{servings}</span>
+                  <button
+                    onClick={increaseServings}
+                    className="bg-gray-300 text-gray-700 px-2 py-1 rounded-r"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
             <div className="mt-4">
