@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState } from "react";
 import { FavoriteContext } from "../Utils/FavoriteContext";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 //
 
 export default function RecipeCard({ data, onClick }) {
@@ -31,7 +32,7 @@ export default function RecipeCard({ data, onClick }) {
   return (
     <div onClick={handleClick} className="rounded-md shadow-md cursor-pointer">
       <div
-        className="flex items-end justify-end h-56 w-full bg-cover"
+        className="flex items-end justify-end h-56 w-full bg-cover relative"
         style={{
           backgroundImage: `url(${data.image})`,
         }}
@@ -39,11 +40,18 @@ export default function RecipeCard({ data, onClick }) {
         <button
           name="save"
           onClick={handleSave}
-          className={`p-2 rounded-sm m-2 ${
-            saved ? "bg-green-500" : "bg-gray-500"
-          } text-white`}
+          className={`p-2 rounded-lg m-2 absolute top-0 right-0
+            bg-white
+           text-white`}
         >
-          {saved ? "Saved" : "Save"}
+          {saved ? (
+            <FaHeart className="text-red-500 h-6 w-6" />
+          ) : (
+            <FaRegHeart
+              className=" h-6 w-6"
+              style={{ stroke: "black", strokeWidth: "4" }}
+            />
+          )}
         </button>
       </div>
       <div className="px-5 py-3">
